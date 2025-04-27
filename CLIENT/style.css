@@ -1,0 +1,132 @@
+body {
+    font-family: 'Cinzel', serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: url('./sheepBackground.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #8B0000;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #8B0000;
+    font-family: 'Cinzel', serif;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    background: rgba(245, 222, 179, 0.8);
+    display: inline-block;
+    padding: 10px 20px;
+    border: 3px solid #8B0000;
+    border-radius: 12px;
+    backdrop-filter: blur(3px);
+}
+
+main.chat-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.chat-container {
+    width: 80vw;
+    background: rgba(104, 112, 50, 0.3);
+    border: 3px solid #8B0000;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(3px);
+}
+
+.chat-box {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    max-height: 60vh;
+    border-bottom: 2px solid #8B0000;
+}
+
+.chat-message {
+    margin-bottom: 12px;
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.chat-message.user {
+    margin-left: auto;
+    background: #8B0000;
+    color: #fff;
+    text-align: right;
+    border-top-right-radius: 0;
+}
+
+.chat-message.ai {
+    margin-right: auto;
+    background: #f5e6c8;
+    color: #8B0000;
+    text-align: left;
+    border-top-left-radius: 0;
+}
+
+.input-container {
+    display: flex;
+    padding: 10px;
+    background: rgba(245, 222, 179, 0.8);
+}
+
+.input-container input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #8B0000;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fffaf0;
+    color: #8B0000;
+}
+
+.input-container input::placeholder {
+    color: #8B0000;
+    opacity: 0.6;
+}
+
+.input-container button {
+    margin-left: 8px;
+    padding: 10px 16px;
+    border: none;
+    background: #8B0000;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.input-container button:hover {
+    background: #a83232;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: rgba(245, 222, 179, 0.8);
+    border-top: 2px solid #8B0000;
+    font-size: 14px;
+    width: 100%;
+    color: #8B0000;
+    font-family: 'Cinzel', serif;
+    margin-top: 20px;
+}
