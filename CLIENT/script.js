@@ -1,6 +1,7 @@
 const btn = document.querySelector("#submitButton");
 const field = document.querySelector("#messageInput");
 const endresult = document.querySelector("#result");
+let isResponding = false;
 
 field.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
@@ -14,6 +15,11 @@ btn.addEventListener("click", async (e) => askQuestion(e));
 async function askQuestion(e) {
     e.preventDefault();
 
+    if (isResponding) return;
+
+    isResponding = true;
+    btn.disabled = true;
+
     const options = {
         method: "POST",
         mode: "cors",
@@ -23,53 +29,58 @@ async function askQuestion(e) {
         body: JSON.stringify({ prompt: field.value }),
     };
 
-    const response = await fetch("http://localhost:3000/ask", options);
+    try {
+        const response = await fetch("http://localhost:3000/ask", options);
 
-    if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
-        // endresult.innerText = data.message;
-        addMessageHistory(data.message);
-    } else {
-        console.error(response.status);
+        if (response.ok) {
+            const data = await response.json();
+            await addMessageHistory(data.message);
+        } else {
+            console.error(response.status);
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isResponding = false;
+        btn.disabled = false;
     }
 }
 
+
 function addMessageHistory(data) {
-    console.log(data);
-    const chatBox = document.getElementById('chatBox');
-    const message = field.value.trim();
+    return new Promise((resolve) => {
+        const chatBox = document.getElementById('chatBox');
+        const message = field.value.trim();
 
-    if (message) {
-        // Add user message to chat
-        const userMessage = document.createElement('div');
-        userMessage.className = 'chat-message user';
-        userMessage.textContent = message;
-        chatBox.appendChild(userMessage);
+        if (message) {
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user';
+            userMessage.textContent = message;
+            chatBox.appendChild(userMessage);
 
-        // Create empty AI message
-        const aiMessage = document.createElement('div');
-        aiMessage.className = 'chat-message ai';
-        chatBox.appendChild(aiMessage);
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'chat-message ai';
+            chatBox.appendChild(aiMessage);
 
-        // Scroll to bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        // Clear input
-        field.value = '';
+            field.value = '';
 
-        // Stream AI response word by word
-        const words = data.split(' ');
-        let index = 0;
+            const words = data.split(' ');
+            let index = 0;
 
-        const streamInterval = setInterval(() => {
-            if (index < words.length) {
-                aiMessage.textContent += (index === 0 ? '' : ' ') + words[index];
-                chatBox.scrollTop = chatBox.scrollHeight; // keep scrolling
-                index++;
-            } else {
-                clearInterval(streamInterval); // done
-            }
-        }, 150); // 150ms delay between words (adjust if you want)
-    }
+            const streamInterval = setInterval(() => {
+                if (index < words.length) {
+                    aiMessage.textContent += (index === 0 ? '' : ' ') + words[index];
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    index++;
+                } else {
+                    clearInterval(streamInterval);
+                    resolve();
+                }
+            }, 150);
+        } else {
+            resolve();
+        }
+    });
 }
