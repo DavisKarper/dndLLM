@@ -1,4 +1,4 @@
-### Installatie instructies
+# Installatie instructies
 
 ## Client
 De client kan direct worden gebruikt met liveserver.
